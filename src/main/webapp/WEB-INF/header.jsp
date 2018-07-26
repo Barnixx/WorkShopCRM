@@ -51,7 +51,6 @@ To change this template use File | Settings | File Templates.
                 </a>
             </li>
             <li>
-
                 <a href="#pageEmployee" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                     <i class="fas fa-user"></i>
                     Pracownicy
@@ -62,6 +61,23 @@ To change this template use File | Settings | File Templates.
                     </li>
                     <li>
                         <a href="/addEmployee">Dodaj Pracownika</a>
+                    </li>
+                    <li>
+                        <a href="#">Page 3</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="#pageCustomer" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                    <i class="fas fa-user"></i>
+                    Klienci
+                </a>
+                <ul class="collapse list-unstyled" id="pageCustomer">
+                    <li>
+                        <a href="/customer">Klienci</a>
+                    </li>
+                    <li>
+                        <a href="/addEmployee">Dodaj Klienta</a>
                     </li>
                     <li>
                         <a href="#">Page 3</a>
