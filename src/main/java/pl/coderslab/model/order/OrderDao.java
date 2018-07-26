@@ -12,6 +12,7 @@ public interface OrderDao {
     String DELETE = "DELETE FROM `order` WHERE id = ?";
     String LOAD_ORDER_BY_ID = "SELECT * FROM `order` WHERE id = ?";
     String LOAD_ALL_ORDER = "SELECT * FROM `order`";
+    String LOAD_CURRENT_ORDER = "SELECT * FROM order WHERE status NOT LIKE 'Gotowy do odbioru' AND status NOT LIKE 'Rezygnacja'";
 
     default void saveToDB() throws SQLException {
         try (Connection conn = DbUtil.getConn()) {
@@ -98,6 +99,7 @@ public interface OrderDao {
         }
     }
 
+
     static List<Order> loadAll() throws SQLException {
         try (Connection conn = DbUtil.getConn()) {
             ArrayList<Order> ordersList = new ArrayList<>();
@@ -126,4 +128,5 @@ public interface OrderDao {
             return ordersList;
         }
     }
+
 }

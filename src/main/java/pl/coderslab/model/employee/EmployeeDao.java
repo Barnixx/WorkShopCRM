@@ -6,7 +6,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-interface EmployeeDao {
+public interface EmployeeDao {
 
     String SAVE_TO_DB = "INSERT INTO employee(name, last_name, address, phone, note, man_hour)VALUES(?,?,?,?,?,?)";
     String UPDATE = "UPDATE employee SET name = ?, last_name = ?, address = ?, phone = ?, note = ?, man_hour = ?  WHERE id = ?";
@@ -94,7 +94,7 @@ interface EmployeeDao {
                 loadedEmployee.setName(resultSet.getString("name"));
                 loadedEmployee.setLast_name(resultSet.getString("last_name"));
                 loadedEmployee.setAddress(resultSet.getString("address"));
-                loadedEmployee.setPhone(resultSet.getString("address"));
+                loadedEmployee.setPhone(resultSet.getString("phone"));
                 loadedEmployee.setNote(resultSet.getString("note"));
                 loadedEmployee.setMan_hour(resultSet.getDouble("man_hour"));
 

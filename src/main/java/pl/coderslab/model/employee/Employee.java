@@ -79,7 +79,7 @@ public class Employee implements EmployeeDao {
 
     @Override
     public String toString() {
-        return "Employee{" +
+        return "EmployeeServlet{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", last_name='" + last_name + '\'' +
