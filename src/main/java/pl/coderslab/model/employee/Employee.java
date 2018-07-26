@@ -1,7 +1,5 @@
 package pl.coderslab.model.employee;
 
-import java.sql.SQLException;
-
 public class Employee implements EmployeeDao {
     private int id;
     private String name;
@@ -90,9 +88,5 @@ public class Employee implements EmployeeDao {
                 ", note='" + note + '\'' +
                 ", man_hour=" + man_hour +
                 '}';
-    }
-
-    public static Employee loadById(int id) throws SQLException {
-        return EmployeeDao.loadById(id);
     }
 }

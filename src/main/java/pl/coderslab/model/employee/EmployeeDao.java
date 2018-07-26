@@ -83,7 +83,7 @@ interface EmployeeDao {
 
     static List<Employee> loadAll() throws SQLException {
         try (Connection conn = DbUtil.getConn()) {
-            ArrayList<Employee> customersList = new ArrayList<>();
+            ArrayList<Employee> employeesList = new ArrayList<>();
             Statement statement;
             statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(LOAD_ALL_EMPLOYEE);
@@ -98,9 +98,9 @@ interface EmployeeDao {
                 loadedEmployee.setNote(resultSet.getString("note"));
                 loadedEmployee.setMan_hour(resultSet.getDouble("man_hour"));
 
-                customersList.add(loadedEmployee);
+                employeesList.add(loadedEmployee);
             }
-            return customersList;
+            return employeesList;
         }
     }
 }

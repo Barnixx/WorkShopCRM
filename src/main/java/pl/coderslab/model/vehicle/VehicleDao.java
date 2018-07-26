@@ -78,7 +78,7 @@ public interface VehicleDao {
 
     static List<Vehicle> loadAll() throws SQLException {
         try (Connection conn = DbUtil.getConn()) {
-            ArrayList<Vehicle> customersList = new ArrayList<>();
+            ArrayList<Vehicle> vehiclesList = new ArrayList<>();
             Statement statement;
             statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(LOAD_ALL_VEHICLE);
@@ -92,9 +92,9 @@ public interface VehicleDao {
                 loadedVehicle.setLicense_plate(resultSet.getString("license_plate"));
                 loadedVehicle.setNext_inspection(String.valueOf(resultSet.getDate("next_inspection")));
 
-                customersList.add(loadedVehicle);
+                vehiclesList.add(loadedVehicle);
             }
-            return customersList;
+            return vehiclesList;
         }
     }
 }

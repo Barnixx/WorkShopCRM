@@ -1,6 +1,6 @@
 package pl.coderslab.model.order;
 
-public class Order {
+public class Order implements OrderDao {
     private int id;
     private String date_of_accepting;
     private String planned_start_date;
