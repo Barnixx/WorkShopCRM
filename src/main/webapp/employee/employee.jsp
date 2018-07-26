@@ -20,7 +20,8 @@
             <th scope="col">Telefon</th>
             <th scope="col">Notatka</th>
             <th scope="col">Roboczogodzina</th>
-            <th scope="col">Akcje</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
         </tr>
         </thead>
         <tbody>
@@ -35,6 +36,8 @@
                 <td>${employee.man_hour} PLN</td>
                 <td>
                     <a href="/deleteEmployee?id=${employee.id}" class="btn btn-danger" role="button">Usuń</a>
+                </td>
+                <td>
                     <a href="/editEmployee?id=${employee.id}" class="btn btn-danger" role="button">Edytuj</a>
                 </td>
             </tr>

@@ -1,7 +1,7 @@
-package pl.coderslab.controller.employee;
+package pl.coderslab.controller.customer;
 
-import pl.coderslab.model.employee.Employee;
-import pl.coderslab.model.employee.EmployeeDao;
+import pl.coderslab.model.customer.Customer;
+import pl.coderslab.model.customer.CustomerDao;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 
-@WebServlet(name = "DeleteEmployeeServlet", urlPatterns = "/deleteEmployee")
-public class DeleteEmployeeServlet extends HttpServlet {
+@WebServlet(name = "DeleteCustomerServlet", urlPatterns = "/deleteCustomer")
+public class DeleteCustomerServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
@@ -22,13 +22,14 @@ public class DeleteEmployeeServlet extends HttpServlet {
         String id = request.getParameter("id");
         if (id != null) {
             try {
-                Employee employee = EmployeeDao.loadById(Integer.parseInt(id));
-                employee.delete();
-                response.sendRedirect("/employee");
+                Customer customer = CustomerDao.loadById(Integer.parseInt(id));
+                customer.delete();
+                response.sendRedirect("/customer");
             } catch (SQLException | NumberFormatException | NullPointerException e) {
                 response.getWriter().append("Coś poszło nie tak");
                 e.printStackTrace();
             }
         }
+
     }
 }

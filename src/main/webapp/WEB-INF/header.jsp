@@ -77,7 +77,7 @@ To change this template use File | Settings | File Templates.
                         <a href="/customer">Klienci</a>
                     </li>
                     <li>
-                        <a href="/addEmployee">Dodaj Klienta</a>
+                        <a href="/addCustomer">Dodaj Klienta</a>
                     </li>
                     <li>
                         <a href="#">Page 3</a>
