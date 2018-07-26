@@ -71,7 +71,7 @@ public interface EmployeeDao {
                 loadedEmployee.setName(resultSet.getString("name"));
                 loadedEmployee.setLast_name(resultSet.getString("last_name"));
                 loadedEmployee.setAddress(resultSet.getString("address"));
-                loadedEmployee.setPhone(resultSet.getString("address"));
+                loadedEmployee.setPhone(resultSet.getString("phone"));
                 loadedEmployee.setNote(resultSet.getString("note"));
                 loadedEmployee.setMan_hour(resultSet.getDouble("man_hour"));
 
