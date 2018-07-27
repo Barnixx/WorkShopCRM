@@ -19,6 +19,7 @@
             <th scope="col">Data Urodzenia</th>
             <th scope="col"></th>
             <th scope="col"></th>
+            <th scope="col"></th>
         </tr>
         </thead>
         <tbody>
@@ -29,10 +30,13 @@
                 <td>${customer.last_name}</td>
                 <td>${customer.date_of_birth}</td>
                 <td>
+                    <a href="/customerVehicle?id=${customer.id}" class="btn btn-info" role="button">Pojazdy</a>
+                </td>
+                <td>
                     <a href="/deleteCustomer?id=${customer.id}" class="btn btn-danger" role="button">Usuń</a>
                 </td>
                 <td>
-                    <a href="/editCustomer?id=${customer.id}" class="btn btn-danger" role="button">Edytuj</a>
+                    <a href="/editCustomer?id=${customer.id}" class="btn btn-warning" role="button">Edytuj</a>
                 </td>
             </tr>
         </c:forEach>

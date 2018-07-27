@@ -12,7 +12,7 @@ public interface OrderDao {
     String DELETE = "DELETE FROM `order` WHERE id = ?";
     String LOAD_ORDER_BY_ID = "SELECT * FROM `order` WHERE id = ?";
     String LOAD_ALL_ORDER = "SELECT * FROM `order`";
-    String LOAD_CURRENT_ORDER = "SELECT * FROM order WHERE status NOT LIKE 'Gotowy do odbioru' AND status NOT LIKE 'Rezygnacja'";
+    String LOAD_BY_EMPLOYEE = "SELECT * FROM `order` WHERE employee_id = ?";
 
     default void saveToDB() throws SQLException {
         try (Connection conn = DbUtil.getConn()) {
@@ -99,7 +99,6 @@ public interface OrderDao {
         }
     }
 
-
     static List<Order> loadAll() throws SQLException {
         try (Connection conn = DbUtil.getConn()) {
             ArrayList<Order> ordersList = new ArrayList<>();
@@ -129,4 +128,33 @@ public interface OrderDao {
         }
     }
 
+    static List<Order> loadByEmployee(int employeeId) throws SQLException {
+        try (Connection conn = DbUtil.getConn()) {
+            ArrayList<Order> ordersList = new ArrayList<>();
+            PreparedStatement preparedStatement;
+            preparedStatement = conn.prepareStatement(LOAD_BY_EMPLOYEE);
+            preparedStatement.setInt(1, employeeId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Order loadedOrder = new Order();
+                loadedOrder.setId(resultSet.getInt("id"));
+                loadedOrder.setDate_of_accepting(String.valueOf(resultSet.getDate("date_of_accepting")));
+                loadedOrder.setPlanned_start_date(String.valueOf(resultSet.getDate("planned_start_date")));
+                loadedOrder.setEnd_date(String.valueOf(resultSet.getDate("end_date")));
+                loadedOrder.setDescription_of_the_problem(resultSet.getString("description_of_the_problem"));
+                loadedOrder.setRepair_description(resultSet.getString("repair_description"));
+                loadedOrder.setStatus(resultSet.getString("status"));
+                loadedOrder.setRepair_cost(resultSet.getDouble("repair_cost"));
+                loadedOrder.setPart_cost(resultSet.getDouble("part_cost"));
+                loadedOrder.setMan_hours(resultSet.getInt("man_hours"));
+                loadedOrder.setVehicle_id(resultSet.getInt("vehicle_id"));
+                loadedOrder.setCustomer_id(resultSet.getInt("customer_id"));
+                loadedOrder.setEmployee_id(resultSet.getInt("employee_id"));
+
+                ordersList.add(loadedOrder);
+            }
+            return ordersList;
+        }
+    }
 }

@@ -85,6 +85,40 @@ To change this template use File | Settings | File Templates.
                 </ul>
             </li>
             <li>
+                <a href="#pageVehicle" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                    <i class="fas fa-user"></i>
+                    Pojazdy
+                </a>
+                <ul class="collapse list-unstyled" id="pageVehicle">
+                    <li>
+                        <a href="/vehicle">Pojazdy</a>
+                    </li>
+                    <li>
+                        <a href="/addVehicle">Dodaj Pojazd</a>
+                    </li>
+                    <li>
+                        <a href="#">Page 3</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="#pageOrder" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                    <i class="fas fa-user"></i>
+                    Zlecenia
+                </a>
+                <ul class="collapse list-unstyled" id="pageOrder">
+                    <li>
+                        <a href="/order">Zlecenia</a>
+                    </li>
+                    <li>
+                        <a href="/addOrder">Dodaj Zlecenie</a>
+                    </li>
+                    <li>
+                        <a href="#">Page 3</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
                 <a href="#">
                     <i class="fas fa-briefcase"></i>
                     About
@@ -130,10 +164,10 @@ To change this template use File | Settings | File Templates.
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="nav navbar-nav ml-auto">
                         <li class="nav-item active">
-                            <a class="nav-link" href="#">Page</a>
+                            <a class="nav-link" href="/employee">Pracownicy</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Page</a>
+                            <a class="nav-link" href="/customer">Klienci</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Page</a>

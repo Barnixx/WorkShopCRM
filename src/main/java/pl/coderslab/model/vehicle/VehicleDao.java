@@ -12,6 +12,10 @@ public interface VehicleDao {
     String DELETE = "DELETE FROM vehicle WHERE id = ?";
     String LOAD_VEHICLE_BY_ID = "SELECT * FROM vehicle WHERE id = ?";
     String LOAD_ALL_VEHICLE = "SELECT * FROM vehicle";
+    String LOAD_BY_CUSTOMER = "SELECT DISTINCT v.id, v.model, v.brand, v.year_of_production, v.license_plate, v.next_inspection " +
+            "FROM `order` JOIN customer c on `order`.customer_id = c.id " +
+            "JOIN vehicle v on `order`.vehicle_id = v.id " +
+            "WHERE customer_id = ?";
 
     default void saveToDB() throws SQLException {
         try (Connection conn = DbUtil.getConn()) {
@@ -82,6 +86,29 @@ public interface VehicleDao {
             Statement statement;
             statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(LOAD_ALL_VEHICLE);
+
+            while (resultSet.next()) {
+                Vehicle loadedVehicle = new Vehicle();
+                loadedVehicle.setId(resultSet.getInt("id"));
+                loadedVehicle.setModel(resultSet.getString("model"));
+                loadedVehicle.setBrand(resultSet.getString("brand"));
+                loadedVehicle.setYear_of_production(resultSet.getString("year_of_production"));
+                loadedVehicle.setLicense_plate(resultSet.getString("license_plate"));
+                loadedVehicle.setNext_inspection(String.valueOf(resultSet.getDate("next_inspection")));
+
+                vehiclesList.add(loadedVehicle);
+            }
+            return vehiclesList;
+        }
+    }
+
+    static List<Vehicle> loadByCustomer(int customerId) throws SQLException {
+        try (Connection conn = DbUtil.getConn()) {
+            ArrayList<Vehicle> vehiclesList = new ArrayList<>();
+            PreparedStatement preparedStatement;
+            preparedStatement = conn.prepareStatement(LOAD_BY_CUSTOMER);
+            preparedStatement.setInt(1, customerId);
+            ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
                 Vehicle loadedVehicle = new Vehicle();

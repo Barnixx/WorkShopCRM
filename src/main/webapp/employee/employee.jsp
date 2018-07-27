@@ -22,6 +22,7 @@
             <th scope="col">Roboczogodzina</th>
             <th scope="col"></th>
             <th scope="col"></th>
+            <th scope="col"></th>
         </tr>
         </thead>
         <tbody>
@@ -35,10 +36,13 @@
                 <td>${employee.note}</td>
                 <td>${employee.man_hour} PLN</td>
                 <td>
+                    <a href="/employeeOrders?id=${employee.id}" class="btn btn-info" role="button">Zlecenia</a>
+                </td>
+                <td>
                     <a href="/deleteEmployee?id=${employee.id}" class="btn btn-danger" role="button">Usuń</a>
                 </td>
                 <td>
-                    <a href="/editEmployee?id=${employee.id}" class="btn btn-danger" role="button">Edytuj</a>
+                    <a href="/editEmployee?id=${employee.id}" class="btn btn-warning" role="button">Edytuj</a>
                 </td>
             </tr>
         </c:forEach>
