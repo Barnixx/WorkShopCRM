@@ -12,6 +12,7 @@ public interface CustomerDao {
     String DELETE = "DELETE FROM customer WHERE id = ?";
     String LOAD_CUSTOMER_BY_ID = "SELECT * FROM customer WHERE id = ?";
     String LOAD_ALL_CUSTOMER = "SELECT * FROM customer";
+    String LOAD_CUSTOMER_NAME_AND_LASTNAME = "SELECT * FROM customer WHERE name LIKE ? AND last_name LIKE ?";
 
     default void saveToDB() throws SQLException {
         try (Connection conn = DbUtil.getConn()) {
@@ -52,22 +53,26 @@ public interface CustomerDao {
         }
     }
 
+    static Customer loadCustomer(ResultSet resultSet) throws SQLException {
+        if (resultSet.next()) {
+            Customer loadedCustomer = new Customer();
+            loadedCustomer.setId(resultSet.getInt("id"));
+            loadedCustomer.setName(resultSet.getString("name"));
+            loadedCustomer.setLast_name(resultSet.getString("last_name"));
+            loadedCustomer.setDate_of_birth(String.valueOf(resultSet.getDate("date_of_birth")));
+
+            return loadedCustomer;
+        }
+        return null;
+    }
+
     static Customer loadById(int id) throws SQLException {
         try (Connection conn = DbUtil.getConn()) {
             PreparedStatement preparedStatement;
             preparedStatement = conn.prepareStatement(LOAD_CUSTOMER_BY_ID);
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                Customer loadedCustomer = new Customer();
-                loadedCustomer.setId(resultSet.getInt("id"));
-                loadedCustomer.setName(resultSet.getString("name"));
-                loadedCustomer.setLast_name(resultSet.getString("last_name"));
-                loadedCustomer.setDate_of_birth(String.valueOf(resultSet.getDate("date_of_birth")));
-
-                return loadedCustomer;
-            }
-            return null;
+            return loadCustomer(resultSet);
         }
     }
 
@@ -88,6 +93,17 @@ public interface CustomerDao {
                 customersList.add(loadedCustomer);
             }
             return customersList;
+        }
+    }
+
+    static Customer loadByNameAndLastName(String name, String lastName) throws SQLException {
+        try (Connection conn = DbUtil.getConn()) {
+            PreparedStatement preparedStatement;
+            preparedStatement = conn.prepareStatement(LOAD_CUSTOMER_NAME_AND_LASTNAME);
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, lastName);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return loadCustomer(resultSet);
         }
     }
 }

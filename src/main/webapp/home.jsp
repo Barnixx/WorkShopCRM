@@ -22,6 +22,7 @@
             <th scope="col">Koszt naprawy</th>
             <th scope="col">Koszt części</th>
             <th scope="col">Godziny pracy</th>
+            <th scope="col">Koszt roboczogodzin</th>
             <th scope="col">Wykonał naprawe</th>
             <th scope="col">Klient</th>
             <th scope="col">Pojazd</th>
@@ -38,9 +39,10 @@
                 <td>${order.repair_cost} PLN</td>
                 <td>${order.part_cost} PLN</td>
                 <td>${order.man_hours}</td>
-                <td>${order.employee_id}</td>
-                <td>${order.customer_id}</td>
-                <td>${order.vehicle_id}</td>
+                <td>${order.man_hours * order.employee.man_hour} PLN</td>
+                <td>${order.employee.name} ${order.employee.last_name}</td>
+                <td>${order.customer.name} ${order.customer.last_name}</td>
+                <td>${order.vehicle.license_plate}</td>
             </tr>
         </c:forEach>
         </tbody>

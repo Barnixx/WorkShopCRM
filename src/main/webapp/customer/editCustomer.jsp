@@ -12,8 +12,9 @@
 <div>
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/">Strona główna</a></li>
-        <li class="breadcrumb-item"><a href="/customer">Pracownicy</a></li>
-        <li class="breadcrumb-item active">Edytuj Pracownika</li>
+        <li class="breadcrumb-item"><a href="/customer">Klienci</a></li>
+        <li class="breadcrumb-item"><a href="/customerDetails?id=${customer.id}">Klient NR ${customer.id}</a></li>
+        <li class="breadcrumb-item active">Edytuj Klienta</li>
     </ol>
     <form method="post">
         <div class="form-row">

@@ -12,6 +12,7 @@ import java.sql.SQLException;
 
 @WebServlet(name = "AddEmployeeServlet", urlPatterns = "/addEmployee")
 public class AddEmployeeServlet extends HttpServlet {
+    private static final String title = "Dodaj Pracownika";
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         try {
@@ -32,6 +33,7 @@ public class AddEmployeeServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setAttribute("title", title);
         getServletContext().getRequestDispatcher("/employee/addEmployee.jsp")
                 .forward(request, response);
     }

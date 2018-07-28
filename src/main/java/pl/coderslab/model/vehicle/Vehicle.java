@@ -1,5 +1,7 @@
 package pl.coderslab.model.vehicle;
 
+import pl.coderslab.model.customer.Customer;
+
 public class Vehicle implements VehicleDao {
     private int id;
     private String model;
@@ -7,16 +9,18 @@ public class Vehicle implements VehicleDao {
     private String year_of_production;
     private String license_plate;
     private String next_inspection;
+    private Customer customer;
 
     public Vehicle() {
     }
 
-    public Vehicle(String model, String brand, String year_of_production, String license_plate, String next_inspection) {
+    public Vehicle(String model, String brand, String year_of_production, String license_plate, String next_inspection, Customer customer) {
         this.model = model;
         this.brand = brand;
         this.year_of_production = year_of_production;
         this.license_plate = license_plate;
         this.next_inspection = next_inspection;
+        this.customer = customer;
     }
 
     public int getId() {
@@ -65,6 +69,14 @@ public class Vehicle implements VehicleDao {
 
     public void setNext_inspection(String next_inspection) {
         this.next_inspection = next_inspection;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     @Override

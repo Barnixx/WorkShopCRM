@@ -63,7 +63,7 @@ To change this template use File | Settings | File Templates.
                         <a href="/addEmployee">Dodaj Pracownika</a>
                     </li>
                     <li>
-                        <a href="#">Page 3</a>
+                        <a href="#">Raport</a>
                     </li>
                 </ul>
             </li>
@@ -79,9 +79,6 @@ To change this template use File | Settings | File Templates.
                     <li>
                         <a href="/addCustomer">Dodaj Klienta</a>
                     </li>
-                    <li>
-                        <a href="#">Page 3</a>
-                    </li>
                 </ul>
             </li>
             <li>
@@ -95,9 +92,6 @@ To change this template use File | Settings | File Templates.
                     </li>
                     <li>
                         <a href="/addVehicle">Dodaj Pojazd</a>
-                    </li>
-                    <li>
-                        <a href="#">Page 3</a>
                     </li>
                 </ul>
             </li>
@@ -114,33 +108,9 @@ To change this template use File | Settings | File Templates.
                         <a href="/addOrder">Dodaj Zlecenie</a>
                     </li>
                     <li>
-                        <a href="#">Page 3</a>
+                        <a href="#">Raport</a>
                     </li>
                 </ul>
-            </li>
-            <li>
-                <a href="#">
-                    <i class="fas fa-briefcase"></i>
-                    About
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <i class="fas fa-image"></i>
-                    Portfolio
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <i class="fas fa-question"></i>
-                    FAQ
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <i class="fas fa-paper-plane"></i>
-                    Contact
-                </a>
             </li>
         </ul>
     </nav>
@@ -170,10 +140,10 @@ To change this template use File | Settings | File Templates.
                             <a class="nav-link" href="/customer">Klienci</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Page</a>
+                            <a class="nav-link" href="/vehicle">Pojazdy</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Page</a>
+                            <a class="nav-link" href="/order">Zlecenia</a>
                         </li>
                     </ul>
                 </div>

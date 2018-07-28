@@ -32,10 +32,10 @@ public class HomePage extends HttpServlet {
             e.printStackTrace();
         }
         if (currentOrder != null) {
-            request.setAttribute("currentOrder", currentOrder);
+            request.setAttribute("orders", currentOrder);
         }
         request.setAttribute("title", TITLE);
-        getServletContext().getRequestDispatcher("/home.jsp")
+        getServletContext().getRequestDispatcher("/order/order.jsp")
                 .forward(request, response);
 
     }

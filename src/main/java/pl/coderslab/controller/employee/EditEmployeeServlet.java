@@ -13,6 +13,7 @@ import java.sql.SQLException;
 
 @WebServlet(name = "EditEmployeeServlet", urlPatterns = "/editEmployee")
 public class EditEmployeeServlet extends HttpServlet {
+    private static final String title = "Edytuj Pracownika";
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         try {
@@ -34,7 +35,7 @@ public class EditEmployeeServlet extends HttpServlet {
             employee.setNote(note);
 
             employee.saveToDB();
-            response.sendRedirect("/employee");
+            response.sendRedirect("/employeeDetails?id=" + id);
         } catch (SQLException | NullPointerException | NumberFormatException e) {
             response.getWriter().append("Coś poszło nie tak...");
             e.printStackTrace();
@@ -43,6 +44,7 @@ public class EditEmployeeServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+        request.setAttribute("title", title);
         String id = request.getParameter("id");
         if (id != null) {
             try {

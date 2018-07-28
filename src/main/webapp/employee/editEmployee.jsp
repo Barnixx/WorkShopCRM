@@ -13,6 +13,7 @@
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/">Strona główna</a></li>
         <li class="breadcrumb-item"><a href="/employee">Pracownicy</a></li>
+        <li class="breadcrumb-item"><a href="/employeeDetails?id=${employee.id}">Pracownik NR ${employee.id}</a></li>
         <li class="breadcrumb-item active">Edytuj Pracownika</li>
     </ol>
     <form method="post">

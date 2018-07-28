@@ -1,5 +1,9 @@
 package pl.coderslab.model.order;
 
+import pl.coderslab.model.customer.Customer;
+import pl.coderslab.model.employee.Employee;
+import pl.coderslab.model.vehicle.Vehicle;
+
 public class Order implements OrderDao {
     private int id;
     private String date_of_accepting;
@@ -11,14 +15,14 @@ public class Order implements OrderDao {
     private double repair_cost;
     private double part_cost;
     private int man_hours;
-    private int vehicle_id;
-    private int customer_id;
-    private int employee_id;
+    private Vehicle vehicle;
+    private Customer customer;
+    private Employee employee;
 
     public Order() {
     }
 
-    public Order(String date_of_accepting, String planned_start_date, String end_date, String description_of_the_problem, String repair_description, String status, double repair_cost, double part_cost, int man_hours, int vehicle_id, int customer_id, int employee_id) {
+    public Order(String date_of_accepting, String planned_start_date, String end_date, String description_of_the_problem, String repair_description, String status, double repair_cost, double part_cost, int man_hours, Vehicle vehicle, Customer customer, Employee employee) {
         this.date_of_accepting = date_of_accepting;
         this.planned_start_date = planned_start_date;
         this.end_date = end_date;
@@ -28,9 +32,9 @@ public class Order implements OrderDao {
         this.repair_cost = repair_cost;
         this.part_cost = part_cost;
         this.man_hours = man_hours;
-        this.vehicle_id = vehicle_id;
-        this.customer_id = customer_id;
-        this.employee_id = employee_id;
+        this.vehicle = vehicle;
+        this.customer = customer;
+        this.employee = employee;
     }
 
     public int getId() {
@@ -113,46 +117,27 @@ public class Order implements OrderDao {
         this.man_hours = man_hours;
     }
 
-    public int getVehicle_id() {
-        return vehicle_id;
+    public Vehicle getVehicle() {
+        return vehicle;
     }
 
-    public void setVehicle_id(int vehicle_id) {
-        this.vehicle_id = vehicle_id;
+    public void setVehicle(Vehicle vehicle) {
+        this.vehicle = vehicle;
     }
 
-    public int getCustomer_id() {
-        return customer_id;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setCustomer_id(int customer_id) {
-        this.customer_id = customer_id;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
-    public int getEmployee_id() {
-        return employee_id;
+    public Employee getEmployee() {
+        return employee;
     }
 
-    public void setEmployee_id(int employee_id) {
-        this.employee_id = employee_id;
-    }
-
-    @Override
-    public String toString() {
-        return "Order{" +
-                "id=" + id +
-                ", date_of_accepting='" + date_of_accepting + '\'' +
-                ", planned_start_date='" + planned_start_date + '\'' +
-                ", end_date='" + end_date + '\'' +
-                ", description_of_the_problem='" + description_of_the_problem + '\'' +
-                ", repair_description='" + repair_description + '\'' +
-                ", status='" + status + '\'' +
-                ", repair_cost=" + repair_cost +
-                ", part_cost=" + part_cost +
-                ", man_hours=" + man_hours +
-                ", vehicle_id=" + vehicle_id +
-                ", customer_id=" + customer_id +
-                ", employee_id=" + employee_id +
-                '}';
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
     }
 }

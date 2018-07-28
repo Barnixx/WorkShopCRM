@@ -1,6 +1,9 @@
 package pl.coderslab.model.order;
 
 import pl.coderslab.model.DbUtil;
+import pl.coderslab.model.customer.CustomerDao;
+import pl.coderslab.model.employee.EmployeeDao;
+import pl.coderslab.model.vehicle.VehicleDao;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -13,6 +16,9 @@ public interface OrderDao {
     String LOAD_ORDER_BY_ID = "SELECT * FROM `order` WHERE id = ?";
     String LOAD_ALL_ORDER = "SELECT * FROM `order`";
     String LOAD_BY_EMPLOYEE = "SELECT * FROM `order` WHERE employee_id = ?";
+    String LOAD_BY_VEHICLE = "SELECT * FROM `order` WHERE vehicle_id = ?";
+
+
 
     default void saveToDB() throws SQLException {
         try (Connection conn = DbUtil.getConn()) {
@@ -21,17 +27,37 @@ public interface OrderDao {
                 PreparedStatement preparedStatement;
                 preparedStatement = conn.prepareStatement(SAVE_TO_DB, generatedColumns);
                 preparedStatement.setDate(1, Date.valueOf(((Order) this).getDate_of_accepting()));
-                preparedStatement.setDate(2, Date.valueOf(((Order) this).getPlanned_start_date()));
-                preparedStatement.setDate(3, Date.valueOf(((Order) this).getEnd_date()));
+                if (!((Order) this).getPlanned_start_date().equals("")) {
+                    preparedStatement.setDate(2, Date.valueOf(((Order) this).getPlanned_start_date()));
+                } else {
+                    preparedStatement.setNull(2, Types.DATE);
+                }
+                if (!((Order) this).getEnd_date().equals("")) {
+                    preparedStatement.setDate(3, Date.valueOf(((Order) this).getEnd_date()));
+                } else {
+                    preparedStatement.setNull(3, Types.DATE);
+                }
                 preparedStatement.setString(4, ((Order) this).getDescription_of_the_problem());
                 preparedStatement.setString(5, ((Order) this).getRepair_description());
                 preparedStatement.setString(6, ((Order) this).getStatus());
                 preparedStatement.setDouble(7, ((Order) this).getRepair_cost());
                 preparedStatement.setDouble(8, ((Order) this).getPart_cost());
                 preparedStatement.setInt(9, ((Order) this).getMan_hours());
-                preparedStatement.setInt(10, ((Order) this).getVehicle_id());
-                preparedStatement.setInt(11, ((Order) this).getCustomer_id());
-                preparedStatement.setInt(12, ((Order) this).getEmployee_id());
+                if (((Order) this).getVehicle() != null) {
+                    preparedStatement.setInt(10, ((Order) this).getVehicle().getId());
+                } else {
+                    preparedStatement.setNull(10, java.sql.Types.INTEGER);
+                }
+                if (((Order) this).getCustomer() != null) {
+                    preparedStatement.setInt(11, ((Order) this).getCustomer().getId());
+                } else {
+                    preparedStatement.setNull(11, java.sql.Types.INTEGER);
+                }
+                if (((Order) this).getVehicle() != null) {
+                    preparedStatement.setInt(12, ((Order) this).getEmployee().getId());
+                } else {
+                    preparedStatement.setNull(12, java.sql.Types.INTEGER);
+                }
 
                 preparedStatement.executeUpdate();
                 ResultSet resultSet = preparedStatement.getGeneratedKeys();
@@ -42,17 +68,37 @@ public interface OrderDao {
                 PreparedStatement preparedStatement;
                 preparedStatement = conn.prepareStatement(UPDATE);
                 preparedStatement.setDate(1, Date.valueOf(((Order) this).getDate_of_accepting()));
-                preparedStatement.setDate(2, Date.valueOf(((Order) this).getPlanned_start_date()));
-                preparedStatement.setDate(3, Date.valueOf(((Order) this).getEnd_date()));
+                if (!((Order) this).getPlanned_start_date().equals("")) {
+                    preparedStatement.setDate(2, Date.valueOf(((Order) this).getPlanned_start_date()));
+                } else {
+                    preparedStatement.setNull(2, Types.DATE);
+                }
+                if (!((Order) this).getEnd_date().equals("")) {
+                    preparedStatement.setDate(3, Date.valueOf(((Order) this).getEnd_date()));
+                } else {
+                    preparedStatement.setNull(3, Types.DATE);
+                }
                 preparedStatement.setString(4, ((Order) this).getDescription_of_the_problem());
                 preparedStatement.setString(5, ((Order) this).getRepair_description());
                 preparedStatement.setString(6, ((Order) this).getStatus());
                 preparedStatement.setDouble(7, ((Order) this).getRepair_cost());
                 preparedStatement.setDouble(8, ((Order) this).getPart_cost());
                 preparedStatement.setInt(9, ((Order) this).getMan_hours());
-                preparedStatement.setInt(10, ((Order) this).getVehicle_id());
-                preparedStatement.setInt(11, ((Order) this).getCustomer_id());
-                preparedStatement.setInt(12, ((Order) this).getEmployee_id());
+                if (((Order) this).getVehicle() != null) {
+                    preparedStatement.setInt(10, ((Order) this).getVehicle().getId());
+                } else {
+                    preparedStatement.setNull(10, java.sql.Types.INTEGER);
+                }
+                if (((Order) this).getCustomer() != null) {
+                    preparedStatement.setInt(11, ((Order) this).getCustomer().getId());
+                } else {
+                    preparedStatement.setNull(11, java.sql.Types.INTEGER);
+                }
+                if (((Order) this).getVehicle() != null) {
+                    preparedStatement.setInt(12, ((Order) this).getEmployee().getId());
+                } else {
+                    preparedStatement.setNull(12, java.sql.Types.INTEGER);
+                }
                 preparedStatement.setInt(13, ((Order) this).getId());
                 preparedStatement.executeUpdate();
             }
@@ -89,9 +135,9 @@ public interface OrderDao {
                 loadedOrder.setRepair_cost(resultSet.getDouble("repair_cost"));
                 loadedOrder.setPart_cost(resultSet.getDouble("part_cost"));
                 loadedOrder.setMan_hours(resultSet.getInt("man_hours"));
-                loadedOrder.setVehicle_id(resultSet.getInt("vehicle_id"));
-                loadedOrder.setCustomer_id(resultSet.getInt("customer_id"));
-                loadedOrder.setEmployee_id(resultSet.getInt("employee_id"));
+                loadedOrder.setVehicle(VehicleDao.loadById(resultSet.getInt("vehicle_id")));
+                loadedOrder.setCustomer(CustomerDao.loadById(resultSet.getInt("customer_id")));
+                loadedOrder.setEmployee(EmployeeDao.loadById(resultSet.getInt("employee_id")));
 
                 return loadedOrder;
             }
@@ -118,9 +164,9 @@ public interface OrderDao {
                 loadedOrder.setRepair_cost(resultSet.getDouble("repair_cost"));
                 loadedOrder.setPart_cost(resultSet.getDouble("part_cost"));
                 loadedOrder.setMan_hours(resultSet.getInt("man_hours"));
-                loadedOrder.setVehicle_id(resultSet.getInt("vehicle_id"));
-                loadedOrder.setCustomer_id(resultSet.getInt("customer_id"));
-                loadedOrder.setEmployee_id(resultSet.getInt("employee_id"));
+                loadedOrder.setVehicle(VehicleDao.loadById(resultSet.getInt("vehicle_id")));
+                loadedOrder.setCustomer(CustomerDao.loadById(resultSet.getInt("customer_id")));
+                loadedOrder.setEmployee(EmployeeDao.loadById(resultSet.getInt("employee_id")));
 
                 ordersList.add(loadedOrder);
             }
@@ -148,13 +194,44 @@ public interface OrderDao {
                 loadedOrder.setRepair_cost(resultSet.getDouble("repair_cost"));
                 loadedOrder.setPart_cost(resultSet.getDouble("part_cost"));
                 loadedOrder.setMan_hours(resultSet.getInt("man_hours"));
-                loadedOrder.setVehicle_id(resultSet.getInt("vehicle_id"));
-                loadedOrder.setCustomer_id(resultSet.getInt("customer_id"));
-                loadedOrder.setEmployee_id(resultSet.getInt("employee_id"));
+                loadedOrder.setVehicle(VehicleDao.loadById(resultSet.getInt("vehicle_id")));
+                loadedOrder.setCustomer(CustomerDao.loadById(resultSet.getInt("customer_id")));
+                loadedOrder.setEmployee(EmployeeDao.loadById(resultSet.getInt("employee_id")));
 
                 ordersList.add(loadedOrder);
             }
             return ordersList;
         }
     }
+
+    static List<Order> loadByVehcile(int vehicleId) throws SQLException {
+        try (Connection conn = DbUtil.getConn()) {
+            ArrayList<Order> ordersList = new ArrayList<>();
+            PreparedStatement preparedStatement;
+            preparedStatement = conn.prepareStatement(LOAD_BY_VEHICLE);
+            preparedStatement.setInt(1, vehicleId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Order loadedOrder = new Order();
+                loadedOrder.setId(resultSet.getInt("id"));
+                loadedOrder.setDate_of_accepting(String.valueOf(resultSet.getDate("date_of_accepting")));
+                loadedOrder.setPlanned_start_date(String.valueOf(resultSet.getDate("planned_start_date")));
+                loadedOrder.setEnd_date(String.valueOf(resultSet.getDate("end_date")));
+                loadedOrder.setDescription_of_the_problem(resultSet.getString("description_of_the_problem"));
+                loadedOrder.setRepair_description(resultSet.getString("repair_description"));
+                loadedOrder.setStatus(resultSet.getString("status"));
+                loadedOrder.setRepair_cost(resultSet.getDouble("repair_cost"));
+                loadedOrder.setPart_cost(resultSet.getDouble("part_cost"));
+                loadedOrder.setMan_hours(resultSet.getInt("man_hours"));
+                loadedOrder.setVehicle(VehicleDao.loadById(resultSet.getInt("vehicle_id")));
+                loadedOrder.setCustomer(CustomerDao.loadById(resultSet.getInt("customer_id")));
+                loadedOrder.setEmployee(EmployeeDao.loadById(resultSet.getInt("employee_id")));
+
+                ordersList.add(loadedOrder);
+            }
+            return ordersList;
+        }
+    }
+
 }

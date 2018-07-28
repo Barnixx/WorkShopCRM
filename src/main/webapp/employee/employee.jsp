@@ -9,7 +9,11 @@
 <%@include file="../WEB-INF/header.jsp" %>
 <%-- CONTENT --%>
 <div>
-    <h1>Pracownicy</h1>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Strona główna</a></li>
+        <li class="breadcrumb-item active">Pracownicy</li>
+    </ol>
+    <h1>Klienci</h1>
     <table class="table table-striped table-bordered">
         <thead>
         <tr>
@@ -18,10 +22,7 @@
             <th scope="col">Nazwisko</th>
             <th scope="col">Adres</th>
             <th scope="col">Telefon</th>
-            <th scope="col">Notatka</th>
             <th scope="col">Roboczogodzina</th>
-            <th scope="col"></th>
-            <th scope="col"></th>
             <th scope="col"></th>
         </tr>
         </thead>
@@ -33,17 +34,11 @@
                 <td>${employee.last_name}</td>
                 <td>${employee.address}</td>
                 <td>${employee.phone}</td>
-                <td>${employee.note}</td>
                 <td>${employee.man_hour} PLN</td>
                 <td>
-                    <a href="/employeeOrders?id=${employee.id}" class="btn btn-info" role="button">Zlecenia</a>
+                    <a href="/employeeDetails?id=${employee.id}" class="btn btn-info" role="button">Sczegóły</a>
                 </td>
-                <td>
-                    <a href="/deleteEmployee?id=${employee.id}" class="btn btn-danger" role="button">Usuń</a>
-                </td>
-                <td>
-                    <a href="/editEmployee?id=${employee.id}" class="btn btn-warning" role="button">Edytuj</a>
-                </td>
+
             </tr>
         </c:forEach>
         </tbody>

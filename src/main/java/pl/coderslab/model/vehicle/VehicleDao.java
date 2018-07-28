@@ -1,21 +1,19 @@
 package pl.coderslab.model.vehicle;
 
 import pl.coderslab.model.DbUtil;
+import pl.coderslab.model.customer.CustomerDao;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public interface VehicleDao {
-    String SAVE_TO_DB = "INSERT INTO vehicle(model, brand, year_of_production, license_plate, next_inspection)VALUES(?,?,?,?,?)";
-    String UPDATE = "UPDATE vehicle SET model = ?, brand= ?, year_of_production = ?, license_plate = ?, next_inspection = ? WHERE id = ?";
+    String SAVE_TO_DB = "INSERT INTO vehicle(model, brand, year_of_production, license_plate, next_inspection, customer_id)VALUES(?,?,?,?,?,?)";
+    String UPDATE = "UPDATE vehicle SET model = ?, brand= ?, year_of_production = ?, license_plate = ?, next_inspection = ?, customer_id = ? WHERE id = ?";
     String DELETE = "DELETE FROM vehicle WHERE id = ?";
     String LOAD_VEHICLE_BY_ID = "SELECT * FROM vehicle WHERE id = ?";
     String LOAD_ALL_VEHICLE = "SELECT * FROM vehicle";
-    String LOAD_BY_CUSTOMER = "SELECT DISTINCT v.id, v.model, v.brand, v.year_of_production, v.license_plate, v.next_inspection " +
-            "FROM `order` JOIN customer c on `order`.customer_id = c.id " +
-            "JOIN vehicle v on `order`.vehicle_id = v.id " +
-            "WHERE customer_id = ?";
+    String LOAD_BY_CUSTOMER = "SELECT * FROM vehicle WHERE customer_id = ?";
 
     default void saveToDB() throws SQLException {
         try (Connection conn = DbUtil.getConn()) {
@@ -28,6 +26,11 @@ public interface VehicleDao {
                 preparedStatement.setString(3, ((Vehicle) this).getYear_of_production());
                 preparedStatement.setString(4, ((Vehicle) this).getLicense_plate());
                 preparedStatement.setString(5, ((Vehicle) this).getNext_inspection());
+                if (((Vehicle) this).getCustomer() != null) {
+                    preparedStatement.setInt(6, ((Vehicle) this).getCustomer().getId());
+                } else {
+                    preparedStatement.setNull(6, java.sql.Types.INTEGER);
+                }
                 preparedStatement.executeUpdate();
                 ResultSet resultSet = preparedStatement.getGeneratedKeys();
                 while (resultSet.next()) {
@@ -38,10 +41,15 @@ public interface VehicleDao {
                 preparedStatement = conn.prepareStatement(UPDATE);
                 preparedStatement.setString(1, ((Vehicle) this).getModel());
                 preparedStatement.setString(2, ((Vehicle) this).getBrand());
-                preparedStatement.setString(3, ((Vehicle) this).getYear_of_production());
+                preparedStatement.setDate(3, Date.valueOf(((Vehicle) this).getYear_of_production()));
                 preparedStatement.setString(4, ((Vehicle) this).getLicense_plate());
                 preparedStatement.setString(5, ((Vehicle) this).getNext_inspection());
-                preparedStatement.setInt(6, ((Vehicle) this).getId());
+                if (((Vehicle) this).getCustomer() != null) {
+                    preparedStatement.setInt(6, ((Vehicle) this).getCustomer().getId());
+                } else {
+                    preparedStatement.setNull(6, java.sql.Types.INTEGER);
+                }
+                preparedStatement.setInt(7, ((Vehicle) this).getId());
                 preparedStatement.executeUpdate();
             }
         }
@@ -73,6 +81,7 @@ public interface VehicleDao {
                 loadedVehicle.setYear_of_production(resultSet.getString("year_of_production"));
                 loadedVehicle.setLicense_plate(resultSet.getString("license_plate"));
                 loadedVehicle.setNext_inspection(String.valueOf(resultSet.getDate("next_inspection")));
+                loadedVehicle.setCustomer(CustomerDao.loadById(resultSet.getInt("customer_id")));
 
                 return loadedVehicle;
             }
@@ -95,6 +104,7 @@ public interface VehicleDao {
                 loadedVehicle.setYear_of_production(resultSet.getString("year_of_production"));
                 loadedVehicle.setLicense_plate(resultSet.getString("license_plate"));
                 loadedVehicle.setNext_inspection(String.valueOf(resultSet.getDate("next_inspection")));
+                loadedVehicle.setCustomer(CustomerDao.loadById(resultSet.getInt("customer_id")));
 
                 vehiclesList.add(loadedVehicle);
             }
@@ -118,10 +128,12 @@ public interface VehicleDao {
                 loadedVehicle.setYear_of_production(resultSet.getString("year_of_production"));
                 loadedVehicle.setLicense_plate(resultSet.getString("license_plate"));
                 loadedVehicle.setNext_inspection(String.valueOf(resultSet.getDate("next_inspection")));
+                loadedVehicle.setCustomer(CustomerDao.loadById(resultSet.getInt("customer_id")));
 
                 vehiclesList.add(loadedVehicle);
             }
             return vehiclesList;
         }
     }
+
 }

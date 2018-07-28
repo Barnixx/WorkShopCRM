@@ -1,4 +1,4 @@
-package pl.coderslab.controller.customer;
+package pl.coderslab.controller.vehicle;
 
 import pl.coderslab.model.vehicle.Vehicle;
 import pl.coderslab.model.vehicle.VehicleDao;
@@ -10,23 +10,25 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.List;
 
-@WebServlet(name = "CustomerVehicleServlet", urlPatterns = "/customerVehicle")
-public class CustomerVehicleServlet extends HttpServlet {
+@WebServlet(name = "DeleteVehicleServlet", urlPatterns = "/deleteVehicle")
+public class DeleteVehicleServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try {
-            int id = Integer.parseInt(request.getParameter("id"));
-            List<Vehicle> customerVehicles = VehicleDao.loadByCustomer(id);
-            request.setAttribute("vehicles", customerVehicles);
-            getServletContext().getRequestDispatcher("/vehicle/vehicle.jsp")
-                    .forward(request, response);
-        } catch (SQLException e) {
-            e.printStackTrace();
+
+        String id = request.getParameter("id");
+        if (id != null) {
+            try {
+                Vehicle vehicle = VehicleDao.loadById(Integer.parseInt(id));
+                vehicle.delete();
+                response.sendRedirect("/vehicle");
+            } catch (SQLException | NumberFormatException | NullPointerException e) {
+                response.getWriter().append("Coś poszło nie tak");
+                e.printStackTrace();
+            }
         }
     }
 }
