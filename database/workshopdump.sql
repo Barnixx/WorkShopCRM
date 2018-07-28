@@ -96,9 +96,9 @@ CREATE TABLE `order` (
   KEY `fk_order_customer1_idx` (`customer_id`),
   KEY `fk_order_employee_idx` (`employee_id`),
   CONSTRAINT `fk_order_employee` FOREIGN KEY (`employee_id`) REFERENCES `employee` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_order_customer1` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_order_customer` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_order_vehicle` FOREIGN KEY (`vehicle_id`) REFERENCES `vehicle` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -107,7 +107,7 @@ CREATE TABLE `order` (
 
 LOCK TABLES `order` WRITE;
 /*!40000 ALTER TABLE `order` DISABLE KEYS */;
-INSERT INTO `order` VALUES (1,'2018-07-19 18:54:01','2018-07-26',NULL,'Coś się zjebało','o chuj i to poważnie','Przyjęty',450.00,280.00,2,1,1,1),(2,'2018-07-17 11:33:27','2018-07-23','2018-07-24','Coś się zjebało znowu','ale zrobili mi','Rezygnacja',250.00,0.00,4,2,2,1),(3,'2018-07-19 13:26:35','2018-07-12','2018-07-27','znowu','zrobione','Gotowy do odbioru',45.60,5.00,4,1,1,1);
+INSERT INTO `order` VALUES (1,'2018-07-19 00:00:00','2018-07-26',NULL,NULL,'o chuj i to poważnie','Przyjęty',450.00,280.00,2,1,1,1),(2,'2018-07-17 11:33:27','2018-07-23','2018-07-24','Coś się zjebało znowu','ale zrobili mi','Rezygnacja',250.00,0.00,4,2,2,1),(3,'2018-07-19 13:26:35','2018-07-12','2018-07-27','znowu','zrobione','Gotowy do odbioru',45.60,5.00,4,1,1,1),(4,'2018-07-28 00:00:00','2018-08-02',NULL,NULL,'','Zatwierdzone koszty naprawy',0.00,0.00,4,3,3,2);
 /*!40000 ALTER TABLE `order` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -122,12 +122,15 @@ CREATE TABLE `vehicle` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `model` varchar(30) DEFAULT NULL,
   `brand` varchar(30) DEFAULT NULL,
-  `year_of_production` year(4) DEFAULT NULL,
+  `year_of_production` date DEFAULT NULL,
   `license_plate` char(7) DEFAULT NULL,
   `next_inspection` date DEFAULT NULL,
+  `customer_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `license_plate_UNIQUE` (`license_plate`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+  UNIQUE KEY `license_plate_UNIQUE` (`license_plate`),
+  KEY `fk_vehicle_customer_idx` (`customer_id`),
+  CONSTRAINT `fk_vehicle_customer` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -136,7 +139,7 @@ CREATE TABLE `vehicle` (
 
 LOCK TABLES `vehicle` WRITE;
 /*!40000 ALTER TABLE `vehicle` DISABLE KEYS */;
-INSERT INTO `vehicle` VALUES (1,'Insigni II','Opel',2014,'GD23658','2019-07-18'),(2,'Golf IV','Volkswagen',NULL,'GDA2654','2018-07-28');
+INSERT INTO `vehicle` VALUES (1,'Insigni II','Opel','2014-01-01','GD23658','2019-07-18',1),(2,'Golf IV','Volkswagen','2000-01-01','GDA2654','2018-07-28',2),(3,'Ibiza','Seat','2002-07-10','GDA3652','2019-07-10',NULL),(4,'Almera','Nissan','1997-09-19','GD32565','2018-07-31',3);
 /*!40000 ALTER TABLE `vehicle` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -163,9 +166,14 @@ SET character_set_client = utf8;
  1 AS `employee_id`,
  1 AS `employee_name`,
  1 AS `employee_lastname`,
+ 1 AS `employee_address`,
+ 1 AS `employee_phone`,
+ 1 AS `employee_note`,
+ 1 AS `employee_man_hour`,
  1 AS `customer_id`,
  1 AS `customer_name`,
  1 AS `customer_lastname`,
+ 1 AS `customer_birth`,
  1 AS `vehicle_id`,
  1 AS `vehicle_brand`,
  1 AS `vehicle_model`,
@@ -186,7 +194,7 @@ SET character_set_client = @saved_cs_client;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `vorder` AS (select `order`.`id` AS `id`,`order`.`date_of_accepting` AS `date_of_accepting`,`order`.`planned_start_date` AS `planned_start_date`,`order`.`end_date` AS `end_date`,`order`.`description_of_the_problem` AS `description_of_the_problem`,`order`.`repair_description` AS `repair_description`,`order`.`status` AS `status`,`order`.`repair_cost` AS `repair_cost`,`order`.`part_cost` AS `part_cost`,`order`.`man_hours` AS `man_hours`,(`employee`.`man_hour` * `order`.`man_hours`) AS `cost_for_hours`,`order`.`employee_id` AS `employee_id`,`employee`.`name` AS `employee_name`,`employee`.`last_name` AS `employee_lastname`,`order`.`customer_id` AS `customer_id`,`customer`.`name` AS `customer_name`,`customer`.`last_name` AS `customer_lastname`,`order`.`vehicle_id` AS `vehicle_id`,`vehicle`.`brand` AS `vehicle_brand`,`vehicle`.`model` AS `vehicle_model`,`vehicle`.`year_of_production` AS `vehilce_year`,`vehicle`.`license_plate` AS `vehilce_license_plate` from (((`order` join `vehicle` on((`order`.`vehicle_id` = `vehicle`.`id`))) join `customer` on((`order`.`customer_id` = `customer`.`id`))) join `employee` on((`order`.`employee_id` = `employee`.`id`)))) */;
+/*!50001 VIEW `vorder` AS (select `order`.`id` AS `id`,`order`.`date_of_accepting` AS `date_of_accepting`,`order`.`planned_start_date` AS `planned_start_date`,`order`.`end_date` AS `end_date`,`order`.`description_of_the_problem` AS `description_of_the_problem`,`order`.`repair_description` AS `repair_description`,`order`.`status` AS `status`,`order`.`repair_cost` AS `repair_cost`,`order`.`part_cost` AS `part_cost`,`order`.`man_hours` AS `man_hours`,(`employee`.`man_hour` * `order`.`man_hours`) AS `cost_for_hours`,`order`.`employee_id` AS `employee_id`,`employee`.`name` AS `employee_name`,`employee`.`last_name` AS `employee_lastname`,`employee`.`address` AS `employee_address`,`employee`.`phone` AS `employee_phone`,`employee`.`note` AS `employee_note`,`employee`.`man_hour` AS `employee_man_hour`,`order`.`customer_id` AS `customer_id`,`customer`.`name` AS `customer_name`,`customer`.`last_name` AS `customer_lastname`,`customer`.`date_of_birth` AS `customer_birth`,`order`.`vehicle_id` AS `vehicle_id`,`vehicle`.`brand` AS `vehicle_brand`,`vehicle`.`model` AS `vehicle_model`,`vehicle`.`year_of_production` AS `vehilce_year`,`vehicle`.`license_plate` AS `vehilce_license_plate` from (((`order` join `vehicle` on((`order`.`vehicle_id` = `vehicle`.`id`))) join `customer` on((`order`.`customer_id` = `customer`.`id`))) join `employee` on((`order`.`employee_id` = `employee`.`id`)))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -200,4 +208,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-07-26 20:03:16
+-- Dump completed on 2018-07-28 20:44:51
