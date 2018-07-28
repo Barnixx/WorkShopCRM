@@ -121,9 +121,11 @@
                 <div class="form-group">
                     <label for="employee_id">Pracownik</label>
                     <select class="form-control" name="employee_id" id="employee_id">
+                        <option value="0"></option>
                         <c:forEach items="${employees}" var="employee">
                             <option value="${employee.id}" ${employee.id == order.employee.id ? 'selected':""}>${employee.name} ${employee.last_name}</option>
                         </c:forEach>
+
                     </select>
                 </div>
             </div>
@@ -146,6 +148,7 @@
                         <c:forEach items="${vehicles}" var="vehicle">
                             <option value="${vehicle.id}" ${vehicle.id == order.vehicle.id ? 'selected':""}>${vehicle.brand} ${vehicle.model} ${vehicle.license_plate}</option>
                         </c:forEach>
+
                     </select>
                 </div>
             </div>

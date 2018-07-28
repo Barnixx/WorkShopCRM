@@ -63,7 +63,7 @@ To change this template use File | Settings | File Templates.
                         <a href="/addEmployee">Dodaj Pracownika</a>
                     </li>
                     <li>
-                        <a href="#">Raport</a>
+                        <a href="/employeeRaport">Raport</a>
                     </li>
                 </ul>
             </li>
@@ -108,7 +108,7 @@ To change this template use File | Settings | File Templates.
                         <a href="/addOrder">Dodaj Zlecenie</a>
                     </li>
                     <li>
-                        <a href="#">Raport</a>
+                        <a href="/">Raport</a>
                     </li>
                 </ul>
             </li>

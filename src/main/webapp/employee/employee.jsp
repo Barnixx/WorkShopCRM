@@ -13,7 +13,7 @@
         <li class="breadcrumb-item"><a href="/">Strona główna</a></li>
         <li class="breadcrumb-item active">Pracownicy</li>
     </ol>
-    <h1>Klienci</h1>
+    <h1>Pracownicy</h1>
     <table class="table table-striped table-bordered">
         <thead>
         <tr>

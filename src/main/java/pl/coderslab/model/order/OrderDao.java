@@ -14,7 +14,7 @@ public interface OrderDao {
     String UPDATE = "UPDATE `order` SET date_of_accepting = ?, planned_start_date = ?, end_date = ?, description_of_the_problem = ?, repair_description = ?, status = ?, repair_cost = ?, part_cost = ?, man_hours = ?, vehicle_id = ?, customer_id = ?, employee_id = ?  WHERE id = ?";
     String DELETE = "DELETE FROM `order` WHERE id = ?";
     String LOAD_ORDER_BY_ID = "SELECT * FROM `order` WHERE id = ?";
-    String LOAD_ALL_ORDER = "SELECT * FROM `order`";
+    String LOAD_ALL_ORDER = "SELECT * FROM `order` ORDER BY date_of_accepting DESC";
     String LOAD_BY_EMPLOYEE = "SELECT * FROM `order` WHERE employee_id = ?";
     String LOAD_BY_VEHICLE = "SELECT * FROM `order` WHERE vehicle_id = ?";
 
@@ -53,7 +53,7 @@ public interface OrderDao {
                 } else {
                     preparedStatement.setNull(11, java.sql.Types.INTEGER);
                 }
-                if (((Order) this).getVehicle() != null) {
+                if (((Order) this).getEmployee() != null) {
                     preparedStatement.setInt(12, ((Order) this).getEmployee().getId());
                 } else {
                     preparedStatement.setNull(12, java.sql.Types.INTEGER);

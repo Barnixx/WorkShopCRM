@@ -13,6 +13,9 @@ public interface EmployeeDao {
     String DELETE = "DELETE FROM employee WHERE id = ?";
     String LOAD_EMPLOYEE_BY_ID = "SELECT * FROM employee WHERE id = ?";
     String LOAD_ALL_EMPLOYEE = "SELECT * FROM employee";
+    String HOUR_RAPORT = "SELECT e.id, name, last_name, SUM(o.man_hours) AS man_hour FROM `order` o JOIN employee e on o.employee_id = e.id " +
+            "WHERE planned_start_date >= ? AND planned_start_date <= ? " +
+            "GROUP BY last_name, name";
 
     default void saveToDB() throws SQLException {
         try (Connection conn = DbUtil.getConn()) {
@@ -103,4 +106,27 @@ public interface EmployeeDao {
             return employeesList;
         }
     }
+
+    static List<Employee> hourRaport(String startDate, String endDate) throws SQLException {
+        try (Connection conn = DbUtil.getConn()) {
+            ArrayList<Employee> employeesList = new ArrayList<>();
+            PreparedStatement preparedStatement;
+            preparedStatement = conn.prepareStatement(HOUR_RAPORT);
+            preparedStatement.setString(1, startDate);
+            preparedStatement.setString(2, endDate);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Employee loadedEmployee = new Employee();
+                loadedEmployee.setId(resultSet.getInt("id"));
+                loadedEmployee.setName(resultSet.getString("name"));
+                loadedEmployee.setLast_name(resultSet.getString("last_name"));
+                loadedEmployee.setMan_hour(resultSet.getDouble("man_hour"));
+
+                employeesList.add(loadedEmployee);
+            }
+            return employeesList;
+        }
+    }
+
 }

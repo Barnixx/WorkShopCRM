@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @WebServlet(name = "EmployeeDetailsServlet", urlPatterns = "/employeeDetails")
 public class EmployeeDetailsServlet extends HttpServlet {
@@ -28,6 +29,9 @@ public class EmployeeDetailsServlet extends HttpServlet {
             Employee employee = EmployeeDao.loadById(id);
             request.setAttribute("employee", employee);
             List<Order> orders = OrderDao.loadByEmployee(id);
+            orders = orders.stream()
+                    .filter(order -> order.getStatus().equals("W naprawie"))
+                    .collect(Collectors.toList());
             request.setAttribute("orders", orders);
             getServletContext().getRequestDispatcher("/employee/employeeDetails.jsp")
                     .forward(request, response);
